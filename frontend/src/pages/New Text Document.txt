@@ -1,0 +1,31 @@
+[
+  {"title":"First Prize","amount":"₹15000"},
+  {"title":"Second Prize","amount":"₹10000"},
+  {"title":"Third Prize","amount":"₹5000"}
+]
+
+
+[
+  "Team must have 2-4 members",
+  "No plagiarism allowed",
+  "All work must be original",
+  "Use of open-source tools is allowed"
+]
+
+[
+  {
+    "title": "Registration",
+    "startDate": "2026-03-10",
+    "endDate": "2026-04-25"
+  },
+  {
+    "title": "Team Formation",
+    "startDate": "2026-03-15",
+    "endDate": "2026-04-25"
+  },
+  {
+    "title": "Final Submission",
+    "startDate": "2026-05-01",
+    "endDate": "2026-05-01"
+  }
+]

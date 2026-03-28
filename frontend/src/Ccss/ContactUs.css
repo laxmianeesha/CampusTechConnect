@@ -1,0 +1,36 @@
+.contact-grid{
+    display:grid;
+    grid-template-columns:1fr 1.5fr;
+    gap:40px;
+  }
+  
+  .contact-info h3{
+    margin-top:20px;
+  }
+  
+  .contact-form{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+  }
+  
+  .contact-form input,
+  .contact-form textarea{
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+  }
+  
+  .contact-form button{
+    background:#06b6d4;
+    color:white;
+    border:none;
+    padding:14px;
+    border-radius:10px;
+    font-weight:600;
+  }
+  

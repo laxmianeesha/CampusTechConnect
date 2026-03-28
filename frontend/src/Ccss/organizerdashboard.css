@@ -1,0 +1,136 @@
+/* MAIN CONTAINER FIX */
+.custom-container {
+  width: 100%;
+  max-width: 1200px;   /* important */
+  margin: auto;        /* center page */
+  padding: 20px;
+  
+  display: block !important;   /* override flex */
+
+}
+
+/* FORM CENTER */
+.custom-container > .custom-card:first-child {
+  max-width: 500px;
+  margin: 0 auto 40px auto;
+}
+
+/* EVENTS GRID */
+.events-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+/* CARD */
+.custom-card {
+  width: 82%;
+}
+
+/* BUTTON COLORS */
+.custom-btn.danger {
+  background: #ef4444;
+  color: white;
+}
+
+.custom-btn.success {
+  background: #22c55e;
+  color: white;
+}
+
+.custom-btn.secondary {
+  background: #64748b;
+  color: white;
+}
+/* EVENTS GRID */
+.events-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;              /* 🔥 space between cards */
+}
+
+/* MAIN EVENT CARD */
+.custom-card {
+  background: white;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  transition: 0.3s;
+}
+
+/* HOVER EFFECT */
+.custom-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+}
+
+/* IMAGE */
+.custom-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+/* TEXT */
+.custom-card h5 {
+  margin: 10px 0 5px;
+}
+
+.custom-card p {
+  margin: 5px 0;
+  color: #475569;
+}
+
+/* PROGRESS BAR */
+.progress-bar {
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.fill {
+  height: 100%;
+  background: #06b6d4;
+  border-radius: 10px;
+}
+
+/* BUTTON */
+.custom-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+/* DELETE */
+.custom-btn.danger {
+  background: #ef4444;
+  color: white;
+}
+
+/* APPROVE / REJECT */
+.custom-btn.success {
+  background: #22c55e;
+  color: white;
+}
+
+.custom-btn.secondary {
+  background: #64748b;
+  color: white;
+}
+
+/* REGISTRATION CARD (INSIDE EVENT CARD) */
+.custom-card .custom-card {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f8fafc;
+  box-shadow: none;
+  border: 1px solid #e2e8f0;
+}
