@@ -9,7 +9,6 @@ function StudentDashboard() {
     fetch("http://localhost:5000/api/events")
       .then((res) => res.json())
       .then((data) => {
-
         const myRegistrations = [];
 
         data.forEach((event) => {
@@ -28,48 +27,89 @@ function StudentDashboard() {
   }, [user.id]);
 
   const getBadge = (status) => {
+    const baseStyle = {
+      padding: "6px 12px",
+      borderRadius: "20px",
+      fontSize: "12px",
+      fontWeight: "600"
+    };
+
     if (status === "approved")
-      return <span className="badge bg-success">Approved</span>;
+      return <span style={{ ...baseStyle, background: "#dcfce7", color: "#166534" }}>Approved</span>;
 
     if (status === "pending")
-      return <span className="badge bg-warning text-dark">Pending</span>;
+      return <span style={{ ...baseStyle, background: "#fef3c7", color: "#92400e" }}>Pending</span>;
 
     if (status === "rejected")
-      return <span className="badge bg-danger">Rejected</span>;
+      return <span style={{ ...baseStyle, background: "#fee2e2", color: "#991b1b" }}>Rejected</span>;
   };
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center mb-4">My Event Registrations</h2>
+    <div style={{ padding: "40px" }}>
+      
+      <h2 style={{ textAlign: "center", marginBottom: "30px" }}>
+        My Event Registrations
+      </h2>
 
-      <div className="row">
+      {/* Cards Container */}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "20px",
+          justifyContent: "center"
+        }}
+      >
         {events.length === 0 ? (
-          <p className="text-center">You have not registered for any events yet.</p>
+          <p>No registrations yet</p>
         ) : (
-          events.map((event) => (
-            <div key={event._id} className="col-md-4 mb-4">
-              <div className="card shadow h-100">
-                <div className="card-body d-flex flex-column">
+          events.map((event) => {
+            const now = new Date();
+            const eventStatus =
+              new Date(event.date) < now ? "expired" : "active";
 
-                  <h5 className="card-title">{event.title}</h5>
+            return (
+              <div
+                key={event._id}
+                style={{
+                  width: "300px",
+                  background: "#fff",
+                  borderRadius: "12px",
+                  padding: "20px",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  opacity: eventStatus === "expired" ? 0.6 : 1,
+                  transition: "0.3s"
+                }}
+              >
+                <h3 style={{ marginBottom: "10px" }}>{event.title}</h3>
 
-                  <p className="card-text">
-                    <strong>College:</strong> {event.college}
-                  </p>
+                <p>
+                  <strong>College:</strong> {event.college}
+                </p>
 
-                  <p className="card-text">
-                    <strong>Date:</strong>{" "}
-                    {new Date(event.date).toLocaleDateString()}
-                  </p>
+                <p>
+                  <strong>Date:</strong>{" "}
+                  {new Date(event.date).toLocaleDateString()}
+                </p>
 
-                  <div className="mt-auto">
-                    {getBadge(event.status)}
-                  </div>
+                {/* Event Status */}
+                <p
+                  style={{
+                    color: eventStatus === "expired" ? "red" : "green",
+                    fontWeight: "bold",
+                    marginTop: "10px"
+                  }}
+                >
+                  {eventStatus === "expired" ? "Expired" : "Active"}
+                </p>
 
+                {/* Registration Status */}
+                <div style={{ marginTop: "15px" }}>
+                  {getBadge(event.status)}
                 </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
     </div>

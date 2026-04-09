@@ -197,15 +197,14 @@ function OrganiserDashboard() {
             onChange={(e) => setDescription(e.target.value)}
             required
           />
-
           <input
             type="date"
             className="custom-input mb-3"
             value={date}
             onChange={(e) => setDate(e.target.value)}
+            min={new Date().toISOString().split("T")[0]}
             required
           />
-
           <input
             type="number"
             className="custom-input mb-3"

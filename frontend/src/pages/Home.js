@@ -26,17 +26,17 @@ function Home() {
       .catch((err) => console.error(err));
   }, []);
 
-  
- const galleryImages = [
-  "https://images.unsplash.com/photo-1519389950473-47ba0277781c", 
-  "https://images.unsplash.com/photo-1504384308090-c894fdcc538d", 
-  "https://images.unsplash.com/photo-1551836022-d5d88e9218df", 
-  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f", 
-  "https://images.unsplash.com/photo-1531482615713-2afd69097998", 
-  "https://images.unsplash.com/photo-1556761175-b413da4baf72", 
-  "https://images.unsplash.com/photo-1517048676732-d65bc937f952", 
-  "https://images.unsplash.com/photo-1526378722484-bd91ca387e72"  
-];
+
+  const galleryImages = [
+    "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
+    "https://images.unsplash.com/photo-1551836022-d5d88e9218df",
+    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
+    "https://images.unsplash.com/photo-1531482615713-2afd69097998",
+    "https://images.unsplash.com/photo-1556761175-b413da4baf72",
+    "https://images.unsplash.com/photo-1517048676732-d65bc937f952",
+    "https://images.unsplash.com/photo-1526378722484-bd91ca387e72"
+  ];
 
 
   useEffect(() => {
@@ -58,9 +58,11 @@ function Home() {
 
     setFilteredEvents(result);
   }, [searchText, eventType, location, events]);
-
-  const displayEvents =
-    searchText || eventType || location ? filteredEvents : events;
+  const displayEvents = Array.isArray(
+    searchText || eventType || location ? filteredEvents : events
+  )
+    ? (searchText || eventType || location ? filteredEvents : events)
+    : [];
 
   const scrollLeft = () => {
     scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
@@ -154,8 +156,13 @@ function Home() {
 
           <div className="cards" ref={scrollRef}>
             {displayEvents.slice(0, 6).map((event) => (
-              <div key={event._id} className="card">
-
+              <div
+                key={event._id}
+                className="card"
+                style={{
+                  opacity: event.eventStatus === "expired" ? 0.6 : 1
+                }}
+              >
                 <img
                   src={
                     event.image
@@ -169,12 +176,21 @@ function Home() {
                 <p>College: {event.college}</p>
                 <p>{new Date(event.date).toLocaleDateString()}</p>
 
-                <Link to="/all-events">
-                  <button className="custom-btn primary ">
-                    View Details
-                  </button>
-                </Link>
+                <p style={{ color: event.eventStatus === "expired" ? "red" : "green" }}>
+                  {event.eventStatus === "expired" ? "Expired" : "Active"}
+                </p>
 
+                {event.eventStatus === "expired" ? (
+                  <button className="custom-btn" disabled>
+                    Event Ended
+                  </button>
+                ) : (
+                  <Link to="/all-events">
+                    <button className="custom-btn primary">
+                      View Details
+                    </button>
+                  </Link>
+                )}
               </div>
             ))}
           </div>
@@ -227,18 +243,18 @@ function Home() {
 
       </section>
 
-     <section className="gallery-section container">
-  <h2>Event Gallery</h2>
-  <p className="sub">Glimpses from past events</p>
+      <section className="gallery-section container">
+        <h2>Event Gallery</h2>
+        <p className="sub">Glimpses from past events</p>
 
-  <div className="slider">
-    <div className="slide-track">
-      {galleryImages.concat(galleryImages).map((img, index) => (
-        <img key={index} src={img} alt="event" />
-      ))}
-    </div>
-  </div>
-</section>
+        <div className="slider">
+          <div className="slide-track">
+            {galleryImages.concat(galleryImages).map((img, index) => (
+              <img key={index} src={img} alt="event" />
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

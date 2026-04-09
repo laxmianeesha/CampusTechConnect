@@ -14,6 +14,7 @@ function AllEvents() {
             .then((data) => setEvents(data))
             .catch((err) => console.error(err));
     }, []);
+    const now = new Date();
 
     return (
         <div className="container">
@@ -24,13 +25,17 @@ function AllEvents() {
                     <p>No events available.</p>
                 ) : (
                     events.map((event) => {
+                            const eventStatus =
+        new Date(event.date) < now ? "expired" : "active";
                         const approvedCount =
                             event.registrations?.filter(
                                 (r) => r.status === "approved"
                             ).length || 0;
 
                         return (
-                            <div key={event._id} className="card">
+                            <div key={event._id} className="card" style={{
+    opacity: eventStatus === "expired" ? 0.6 : 1
+  }}>
 
                                 <img
                                     src={
@@ -55,14 +60,23 @@ function AllEvents() {
                                         🔐 Login to register
                                     </p>
                                 )}
+                                <p style={{ color: eventStatus === "expired" ? "red" : "green" }}>
+                                    {eventStatus === "expired" ? "Expired" : "Active"}
+                                </p>
 
                                 {user?.role === "student" && (
-                                    <button
-                                        className="register-btn"
-                                        onClick={() => navigate(`/event/${event._id}`)}
-                                    >
-                                        View Details
-                                    </button>
+                                    eventStatus === "expired" ? (
+                                        <button className="register-btn" disabled>
+                                            Event Expired
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className="register-btn"
+                                            onClick={() => navigate(`/event/${event._id}`)}
+                                        >
+                                            View Details
+                                        </button>
+                                    )
                                 )}
 
                             </div>

@@ -38,6 +38,13 @@ router.post("/add", verifyToken, upload.single("image"), async (req, res) => {
   timeline,
    teamSize
 } = req.body;
+const today = new Date().toISOString().split("T")[0];
+
+    if (date < today) {
+      return res.status(400).json({
+        message: "❌ Cannot create event with past date"
+      });
+    }
 
     const newEvent = new Event({
       title,
@@ -78,8 +85,16 @@ router.get("/", async (req, res) => {
     const events = await Event.find()
       .populate("organiser", "name email")
       .populate("registrations.student", "name email");
+      const now = new Date();
+     const updatedEvents = events.map(event => {
+      return {
+        ...event._doc,
+        eventStatus: new Date(event.date) < now ? "expired" : "active"
+      };
+    });
 
-    res.json(events);
+    res.json(updatedEvents);
+
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
