@@ -11,7 +11,9 @@ const adminRoutes = require("./routes/adminRoutes");
 const app = express();
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: "*"
+}));
 app.use(express.json());
 
 // Routes
