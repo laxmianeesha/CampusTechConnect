@@ -53,6 +53,13 @@ idProof: {
     default: function () {
       return this.role === "organiser" ? "pending" : "approved";
     }
+  },
+   otp: {
+    type: String
+  },
+
+  otpExpiry: {
+    type: Date
   }
 
 }, { timestamps: true });

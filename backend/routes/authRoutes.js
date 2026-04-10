@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const nodemailer = require("nodemailer");
 
 
 /* ===========================
@@ -111,4 +112,61 @@ router.post("/login", async (req, res) => {
 });
 
 
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) return res.status(400).json({ message: "User not found" });
+
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+  user.otp = otp;
+  user.otpExpiry = Date.now() + 5 * 60 * 1000;
+  await user.save();
+
+  // send email
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.APP_PASSWORD
+    }
+  });
+
+  await transporter.sendMail({
+    to: email,
+    subject: "OTP for Password Reset",
+    text: `Your OTP is ${otp}`
+  });
+
+  res.json({ message: "OTP sent to email" });
+});
+router.post("/verify-otp", async (req, res) => {
+  const { email, otp } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user || user.otp !== otp || user.otpExpiry < Date.now()) {
+    return res.status(400).json({ message: "Invalid or expired OTP" });
+  }
+
+  res.json({ message: "OTP verified" });
+});
+
+
+router.post("/reset-password", async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  const user = await User.findOne({ email });
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  user.password = hashedPassword;
+  user.otp = null;
+  user.otpExpiry = null;
+
+  await user.save();
+
+  res.json({ message: "Password updated successfully" });
+});
 module.exports = router;

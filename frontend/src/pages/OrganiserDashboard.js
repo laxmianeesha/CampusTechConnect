@@ -129,35 +129,13 @@ function OrganiserDashboard() {
     setTitle("CVR Tech Fest 2026");
     setCollege("CVR College of Engineering");
     setDescription("A grand technical festival with coding, robotics, and innovation.");
-    setDate("2026-05-10");
+    
     setParticipantLimit(200);
     setLocation("CVR Campus, Hyderabad");
     setMode("Offline");
-    setTeamSize("2-4 members");
+    setTeamSize("2");
 
-    setPrizes([
-      { title: "Winner", amount: "₹30,000" },
-      { title: "Runner Up", amount: "₹15,000" }
-    ]);
-
-    setRules([
-      "Team size must be 2-4 members",
-      "No plagiarism allowed",
-      "Carry ID card"
-    ]);
-
-    setTimeline([
-      {
-        title: "Registration",
-        startDate: "2026-04-01",
-        endDate: "2026-05-05"
-      },
-      {
-        title: "Event Day",
-        startDate: "2026-05-10",
-        endDate: "2026-05-10"
-      }
-    ]);
+   
   };
 
   return (
@@ -202,7 +180,7 @@ function OrganiserDashboard() {
             className="custom-input mb-3"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            min={new Date().toISOString().split("T")[0]}
+            min={new Date().toLocaleDateString("en-CA")}
             required
           />
           <input
@@ -239,7 +217,7 @@ function OrganiserDashboard() {
           <input
             type="text"
             className="custom-input mb-3"
-            placeholder="Team Size (2-4 members)"
+            placeholder="Team Size (like provide max-limit:2)"
             value={teamSize}
             onChange={(e) => setTeamSize(e.target.value)}
           />

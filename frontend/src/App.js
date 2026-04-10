@@ -17,6 +17,9 @@ import AllEvents from "./pages/AllEvents";
 // import AllEvents from "./pages/AdminDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import EventDetails from "./pages/EventDetails";
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyOtp from "./pages/VerifyOtp";
+import ResetPassword from "./pages/ResetPassword";
 /* PROTECTED ROUTE COMPONENT */
 const ProtectedRoute = ({ children, role }) => {
   const token = localStorage.getItem("token");
@@ -53,6 +56,9 @@ function App() {
         <Route path="/all-events" element={<AllEvents />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/event/:id" element={<EventDetails />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+<Route path="/verify-otp" element={<VerifyOtp />} />
+<Route path="/reset-password" element={<ResetPassword />} />
         {/* Student Protected */}
         <Route
           path="/student"

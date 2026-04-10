@@ -76,6 +76,20 @@ function Login() {
           <div className="text-center mt-3">
             <Link to="/register">Register</Link>
           </div>
+          <div style={{ textAlign: "center", marginTop: "10px" }}>
+            <Link
+              to="/forgot-password"
+              style={{
+                color: "#06b6d4",
+                textDecoration: "none",
+                fontWeight: "500",
+                cursor: "pointer"
+              }}
+            >
+              Forgot Password?
+            </Link>
+          </div>
+
         </form>
       </div>
     </div>
