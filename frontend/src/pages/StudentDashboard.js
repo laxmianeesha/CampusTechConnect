@@ -6,7 +6,7 @@ function StudentDashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/events")
+    fetch("https://campustechconnect.onrender.com/api/events")
       .then((res) => res.json())
       .then((data) => {
         const myRegistrations = [];

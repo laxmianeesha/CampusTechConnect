@@ -26,7 +26,7 @@ function EventDetails() {
 
 
     useEffect(() => {
-        fetch(`http://localhost:5000/api/events/${id}`)
+        fetch(`https://campustechconnect.onrender.com/api/events/${id}`)
             .then(res => res.json())
             .then(data => setEvent(data));
     }, [id]);
@@ -64,7 +64,7 @@ function EventDetails() {
             return;
         }
 
-        const res = await fetch("http://localhost:5000/api/events/register", {
+        const res = await fetch("https://campustechconnect.onrender.com/api/events/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -80,7 +80,9 @@ function EventDetails() {
         const data = await res.json();
         alert(data.message);
     };
-
+const now = new Date();
+const eventStatus =
+  new Date(event.date) < now ? "expired" : "active";
     if (!event) return <p>Loading...</p>;
 
     return (
@@ -88,7 +90,7 @@ function EventDetails() {
 
             {/* BANNER */}
             <div className="banner">
-                <img src={`http://localhost:5000/${event.image}`} alt="" />
+                <img src={`https://campustechconnect.onrender.com/${event.image}`} alt="" />
                 <h1>{event.title}</h1>
                 {/* <p>{event.description}</p> */}
             </div>
