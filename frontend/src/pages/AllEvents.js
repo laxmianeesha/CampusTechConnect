@@ -9,7 +9,7 @@ function AllEvents() {
     const user = JSON.parse(localStorage.getItem("user"));
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/events")
+        fetch("https://campustechconnect.onrender.com/api/events")
             .then((res) => res.json())
             .then((data) => setEvents(data))
             .catch((err) => console.error(err));
@@ -40,7 +40,7 @@ function AllEvents() {
                                 <img
                                     src={
                                         event.image
-                                            ? `http://localhost:5000/${event.image}`
+                                            ? `https://campustechconnect.onrender.com/${event.image}`
                                             : "https://via.placeholder.com/400x200"
                                     }
                                     alt={event.title}
