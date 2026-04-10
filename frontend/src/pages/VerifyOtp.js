@@ -12,7 +12,7 @@ function VerifyOtp() {
 
     try {
       const res = await axios.post(
-        "https://campustechconnect.onrender.com/api/auth/verify-otp",
+        "http://localhost:5000/api/auth/verify-otp",
         { email, otp }
       );
 

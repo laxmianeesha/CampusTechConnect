@@ -17,7 +17,7 @@ function Home() {
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-    fetch("https://campustechconnect.onrender.com/api/events")
+    fetch("http://localhost:5000/api/events")
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);
@@ -166,7 +166,7 @@ function Home() {
                 <img
                   src={
                     event.image
-                      ? `https://campustechconnect.onrender.com/${event.image}`
+                      ? `http://localhost:5000/${event.image}`
                       : "https://via.placeholder.com/400x200"
                   }
                   alt={event.title}

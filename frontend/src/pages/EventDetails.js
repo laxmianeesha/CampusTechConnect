@@ -19,17 +19,19 @@ function EventDetails() {
     });
 
     const [members, setMembers] = useState([""]);
-
     const [showForm, setShowForm] = useState(false);
 
     const token = localStorage.getItem("token");
 
-
+    // FETCH EVENT
     useEffect(() => {
-        fetch(`https://campustechconnect.onrender.com/api/events/${id}`)
+        fetch(`http://localhost:5000/api/events/${id}`)
             .then(res => res.json())
-            .then(data => setEvent(data));
+            .then(data => setEvent(data))
+            .catch(err => console.log(err));
     }, [id]);
+
+    // HANDLERS
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
@@ -39,60 +41,69 @@ function EventDetails() {
         updated[index] = value;
         setMembers(updated);
     };
-    const minMembers = event?.teamSize?.min;
-    const maxMembers = event?.teamSize?.max;
+
+    // SAFE TEAM SIZE
+    const minMembers = event?.teamSize?.min || 1;
+    const maxMembers = event?.teamSize?.max || 1;
 
     const addMember = () => {
-        if (members.length >= event?.teamSize) {
-            alert(`Maximum ${event.teamSize} members allowed`);
+        if (members.length >= maxMembers) {
+            alert(`Maximum ${maxMembers} members allowed`);
             return;
         }
         setMembers([...members, ""]);
     };
 
     const removeMember = (index) => {
-        if (members.length <= 1) {
-            alert("At least 1 member required");
+        if (members.length <= minMembers) {
+            alert(`Minimum ${minMembers} members required`);
             return;
         }
-
         setMembers(members.filter((_, i) => i !== index));
     };
+
     const handleRegister = async () => {
         if (!token) {
             alert("Please login first");
             return;
         }
 
-        const res = await fetch("https://campustechconnect.onrender.com/api/events/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                eventId: event._id,
-                ...form,
-                teamMembers: members
-            })
-        });
+        try {
+            const res = await fetch("http://localhost:5000/api/events/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    eventId: event._id,
+                    ...form,
+                    teamMembers: members
+                })
+            });
 
-        const data = await res.json();
-        alert(data.message);
+            const data = await res.json();
+            alert(data.message);
+        } catch (err) {
+            console.log(err);
+            alert("Registration failed");
+        }
     };
-const now = new Date();
-const eventStatus =
-  new Date(event.date) < now ? "expired" : "active";
+
+    // 🔥 FIX: Prevent null error
     if (!event) return <p>Loading...</p>;
+
+    const now = new Date();
+    const eventStatus =
+        new Date(event.date) < now ? "expired" : "active";
 
     return (
         <div className="event-details">
 
             {/* BANNER */}
             <div className="banner">
-                <img src={`https://campustechconnect.onrender.com/${event.image}`} alt="" />
+                <img src={`http://localhost:5000/${event.image}`} alt="" />
                 <h1>{event.title}</h1>
-                {/* <p>{event.description}</p> */}
             </div>
 
             <div className="details-grid">
@@ -101,6 +112,7 @@ const eventStatus =
                 <div className="left">
                     <h2>About</h2>
                     <p>{event.description}</p>
+
                     <h2>Prizes</h2>
                     <div className="prizes-grid">
                         {event.prizes?.map((p, i) => (
@@ -110,6 +122,7 @@ const eventStatus =
                             </div>
                         ))}
                     </div>
+
                     <h2>Rules</h2>
                     <div className="rules-list">
                         {event.rules?.map((r, i) => (
@@ -118,7 +131,6 @@ const eventStatus =
                     </div>
 
                     <h2>Timeline</h2>
-
                     {event.timeline?.map((t, i) => (
                         <div key={i} className="timeline-card">
                             <h4>{t.title}</h4>
@@ -130,7 +142,6 @@ const eventStatus =
                     ))}
 
                     <h2>Location</h2>
-
                     <p>{event.location}</p>
 
                     <iframe
@@ -151,10 +162,12 @@ const eventStatus =
                     <p><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
                     <p><strong>Limit:</strong> {event.participantLimit}</p>
                     <p><strong>Mode:</strong> {event.mode}</p>
-                    <p><strong>TeamSize:</strong> {event?.teamSize}</p>
+                    <p><strong>Team Size:</strong> {minMembers} - {maxMembers}</p>
 
-
-                    {!showForm ? (
+                    {/* 🚫 Disable if expired */}
+                    {eventStatus === "expired" ? (
+                        <p style={{ color: "red" }}>Registration Closed</p>
+                    ) : !showForm ? (
                         <button
                             className="register-btn"
                             onClick={() => setShowForm(true)}
@@ -164,61 +177,52 @@ const eventStatus =
                     ) : (
                         <div className="register-form">
 
-  <input className="form-input" name="teamName" placeholder="Team Name" onChange={handleChange} />
+                            <input className="form-input" name="teamName" placeholder="Team Name" onChange={handleChange} />
+                            <input className="form-input" name="leaderName" placeholder="Team Leader Name" onChange={handleChange} />
+                            <input className="form-input" name="email" placeholder="Email" onChange={handleChange} />
+                            <input className="form-input" name="phone" placeholder="Phone" onChange={handleChange} />
 
-  <input className="form-input" name="leaderName" placeholder="Team Leader Name" onChange={handleChange} />
+                            <h4>Team Members</h4>
 
-  <input className="form-input" name="email" placeholder="Email" onChange={handleChange} />
+                            {members.map((m, index) => (
+                                <div key={index} className="member-row">
+                                    <input
+                                        className="form-input"
+                                        placeholder={`Member ${index + 1}`}
+                                        value={m}
+                                        onChange={(e) => handleMemberChange(index, e.target.value)}
+                                    />
 
-  <input className="form-input" name="phone" placeholder="Phone" onChange={handleChange} />
+                                    <button
+                                        type="button"
+                                        className="icon-btn delete-btn"
+                                        onClick={() => removeMember(index)}
+                                    >
+                                        🗑️
+                                    </button>
+                                </div>
+                            ))}
 
-  <h4>Team Members</h4>
+                            <button
+                                type="button"
+                                className="add-btn"
+                                onClick={addMember}
+                                disabled={members.length >= maxMembers}
+                            >
+                                Add Member
+                            </button>
 
-  {members.map((m, index) => (
-    <div key={index} className="member-row">
+                            <input className="form-input" name="collegeName" placeholder="College Name" onChange={handleChange} />
+                            <input className="form-input" name="yearOfStudy" placeholder="Year of Study" onChange={handleChange} />
+                            <input className="form-input" name="branch" placeholder="Branch" onChange={handleChange} />
+                            <input className="form-input" name="projectTitle" placeholder="Project Title" onChange={handleChange} />
+                            <textarea className="form-input" name="description" placeholder="Project Description" onChange={handleChange} />
 
-      <input
-        className="form-input"
-        placeholder={`Member ${index + 1}`}
-        value={m}
-        onChange={(e) => handleMemberChange(index, e.target.value)}
-      />
+                            <button type="button" onClick={handleRegister} className="submit-btn">
+                                Submit Registration
+                            </button>
 
-      <button
-        type="button"
-        className="icon-btn delete-btn"
-        onClick={() => removeMember(index)}
-      >
-        🗑️
-      </button>
-
-    </div>
-  ))}
-
-  <button
-    type="button"
-    className="add-btn"
-    onClick={addMember}
-    disabled={members.length >= event?.teamSize-1}
-  >
-    Add Member
-  </button>
-
-  <input className="form-input" name="collegeName" placeholder="College Name" onChange={handleChange} />
-
-  <input className="form-input" name="yearOfStudy" placeholder="Year of Study" onChange={handleChange} />
-
-  <input className="form-input" name="branch" placeholder="Branch" onChange={handleChange} />
-
-  <input className="form-input" name="projectTitle" placeholder="Project Title" onChange={handleChange} />
-
-  <textarea className="form-input" name="description" placeholder="Project Description" onChange={handleChange} />
-
-  <button type="button" onClick={handleRegister} className="submit-btn">
-    Submit Registration
-  </button>
-
-</div>
+                        </div>
                     )}
                 </div>
 

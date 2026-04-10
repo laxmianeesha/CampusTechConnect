@@ -12,7 +12,7 @@ function Login() {
     e.preventDefault();
 
     const response = await fetch(
-      "https://campustechconnect.onrender.com/api/auth/login",
+      "http://localhost:5000/api/auth/login",
       {
         method: "POST",
         headers: {

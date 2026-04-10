@@ -13,13 +13,13 @@ function AdminDashboard() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("https://campustechconnect.onrender.com/api/events/all-users")
+    fetch("http://localhost:5000/api/events/all-users")
       .then(res => res.json())
       .then(data => setUsers(data));
   }, []);
 
   useEffect(() => {
-    fetch("https://campustechconnect.onrender.com/api/events")
+    fetch("http://localhost:5000/api/events")
       .then(res => res.json())
       .then(data => setEvents(data));
   }, []);
@@ -58,7 +58,7 @@ function AdminDashboard() {
   ];
 
   const handleApprove = async (userId) => {
-    await fetch(`https://campustechconnect.onrender.com/api/admin/approve/${userId}`, {
+    await fetch(`http://localhost:5000/api/admin/approve/${userId}`, {
       method: "PUT",
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -71,7 +71,7 @@ function AdminDashboard() {
   };
 
   const handleReject = async (userId) => {
-    await fetch(`https://campustechconnect.onrender.com/api/admin/reject/${userId}`, {
+    await fetch(`http://localhost:5000/api/admin/reject/${userId}`, {
       method: "PUT",
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -86,7 +86,7 @@ function AdminDashboard() {
   const handleDelete = async (eventId) => {
     if (!window.confirm("Delete this event?")) return;
 
-    await fetch(`https://campustechconnect.onrender.com/api/admin/delete/${eventId}`, {
+    await fetch(`http://localhost:5000/api/admin/delete/${eventId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -198,7 +198,7 @@ function AdminDashboard() {
 
                   <td>
                     {u.idProof ? (
-                      <a href={`https://campustechconnect.onrender.com/${u.idProof}`} target="_blank" rel="noreferrer">
+                      <a href={`http://localhost:5000/${u.idProof}`} target="_blank" rel="noreferrer">
                         View
                       </a>
                     ) : "No File"}

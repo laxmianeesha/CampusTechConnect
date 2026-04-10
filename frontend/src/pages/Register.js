@@ -54,7 +54,7 @@ function Register() {
     }
 
     const response = await fetch(
-      "https://campustechconnect.onrender.com/api/auth/register",
+      "http://localhost:5000/api/auth/register",
       {
         method: "POST",
         headers: {

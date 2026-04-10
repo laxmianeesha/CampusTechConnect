@@ -27,7 +27,7 @@ function OrganiserDashboard() {
   }, []);
 
   const fetchEvents = () => {
-    fetch("https://campustechconnect.onrender.com/api/events")
+    fetch("http://localhost:5000/api/events")
       .then((res) => res.json())
       .then((data) => {
         const myEvents = data.filter(
@@ -57,7 +57,7 @@ function OrganiserDashboard() {
     formData.append("timeline", timeline);
 
     const response = await fetch(
-      "https://campustechconnect.onrender.com/api/events/add",
+      "http://localhost:5000/api/events/add",
       {
         method: "POST",
         headers: {
@@ -81,7 +81,7 @@ function OrganiserDashboard() {
   };
 
   const handleDelete = async (eventId) => {
-    await fetch(`https://campustechconnect.onrender.com/api/events/delete/${eventId}`, {
+    await fetch(`http://localhost:5000/api/events/delete/${eventId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -90,7 +90,7 @@ function OrganiserDashboard() {
   };
 
   const handleApprove = async (eventId, studentId) => {
-    await fetch("https://campustechconnect.onrender.com/api/events/approve", {
+    await fetch("http://localhost:5000/api/events/approve", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -103,7 +103,7 @@ function OrganiserDashboard() {
   };
 
   const handleReject = async (eventId, studentId) => {
-    await fetch("https://campustechconnect.onrender.com/api/events/reject", {
+    await fetch("http://localhost:5000/api/events/reject", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -269,7 +269,7 @@ function OrganiserDashboard() {
                 <img
                   src={
                     event.image
-                      ? `https://campustechconnect.onrender.com/${event.image}`
+                      ? `http://localhost:5000/${event.image}`
                       : "https://via.placeholder.com/400x200"
                   }
                   alt={event.title}
