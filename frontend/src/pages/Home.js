@@ -17,7 +17,7 @@ function Home() {
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-    fetch("http://localhost:5000/api/events")
+    fetch("https://campustechconnect.onrender.com/api/eventscd")
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);
